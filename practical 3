@@ -1,0 +1,39 @@
+Code:
+# Propositional Logic Inference Example
+
+# Knowledge Base
+P = True
+implication = True   # Represents P -> Q
+
+# Modus Ponens
+if P and implication:
+    Q = True
+else:
+    Q = False
+
+print("Using Modus Ponens:")
+print("P =", P)
+print("P -> Q =", implication)
+print("Therefore Q =", Q)
+
+
+# Resolution Example
+print("\nUsing Resolution:")
+
+clause1 = ["P", "Q"]     # P OR Q
+clause2 = ["~P", "R"]    # NOT P OR R
+
+if "P" in clause1 and "~P" in clause2:
+    resolved = ["Q", "R"]
+    print("Resolved Clause:", resolved)
+
+
+# Satisfiability Check
+print("\nChecking Satisfiability:")
+
+def check_satisfiable(p, q):
+    expression = (not p or q)  # P -> Q
+    return expression
+
+print("Expression (P -> Q) is satisfiable:",
+      check_satisfiable(True, True))
