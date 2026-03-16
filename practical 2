@@ -1,0 +1,124 @@
+Code:
+PS 1 :- 
+from collections import deque
+
+# Graph representation using adjacency list
+graph = {
+'A': ['B', 'C'],
+'B': ['D', 'E'],
+'C': ['F'],
+'D': [],
+'E': ['F'],
+'F': []
+}
+
+# Breadth First Search
+def bfs(start, goal):
+visited = []
+queue = deque([start])
+
+while queue:
+node = queue.popleft()
+
+if node not in visited:
+visited.append(node)
+
+if node == goal:
+print("Goal node found using BFS")
+return visited
+
+queue.extend(graph[node])
+
+return visited
+
+
+# Depth First Search
+def dfs(start, goal):
+visited = []
+stack = [start]
+
+while stack:
+node = stack.pop()
+
+if node not in visited:
+visited.append(node)
+
+if node == goal:
+print("Goal node found using DFS")
+return visited
+
+stack.extend(graph[node])
+
+return visited
+
+
+start = 'A'
+goal = 'F'
+
+print("BFS Traversal:", bfs(start, goal))
+print("DFS Traversal:", dfs(start, goal))
+
+PS 2:- 
+graph = {
+'A': {'B': 1, 'C': 3},
+'B': {'D': 3, 'E': 1},
+'C': {'F': 5},
+'D': {},
+'E': {'F': 2},
+'F': {}
+}
+
+# Heuristic values (estimated distance to goal)
+heuristic = {
+'A': 6,
+'B': 4,
+'C': 5,
+'D': 3,
+'E': 2,
+'F': 0
+}
+
+def a_star(start, goal):
+open_list = {start}
+closed_list = set()
+
+g = {start: 0}
+parent = {start: start}
+
+while open_list:
+node = None
+
+for v in open_list:
+if node is None or g[v] + heuristic[v] < g[node] + heuristic[node]:
+node = v
+
+if node == goal:
+path = []
+while parent[node] != node:
+path.append(node)
+node = parent[node]
+path.append(start)
+path.reverse()
+print("Optimal Path:", path)
+return
+
+open_list.remove(node)
+closed_list.add(node)
+
+for neighbor, cost in graph[node].items():
+if neighbor not in open_list and neighbor not in closed_list:
+open_list.add(neighbor)
+parent[neighbor] = node
+g[neighbor] = g[node] + cost
+
+else:
+if g[neighbor] > g[node] + cost:
+g[neighbor] = g[node] + cost
+parent[neighbor] = node
+if neighbor in closed_list:
+closed_list.remove(neighbor)
+open_list.add(neighbor)
+
+print("Path does not exist")
+
+a_star('A', 'F')
